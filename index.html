@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Какой формат обучения подойдёт вашему ребёнку — School Inter</title>
+<style>
+
+/* ============ ДИЗАЙН-ТОКЕНЫ ============ */
+:root{
+  --paper: #F6F3EA;
+  --paper-line: #C9D9E8;
+  --margin-red: #B84A3E;
+  --ink: #1F3A52;
+  --ink-soft: #4C6478;
+  --gold: #D9A441;
+  --sage: #6E8B6E;
+  --white: #FFFFFF;
+  --shadow: 0 12px 32px rgba(31,58,82,0.12);
+}
+
+@font-face{
+  font-family: 'HandDisplay';
+  src: local('Caveat');
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent, transparent 35px,
+      var(--paper-line) 35px, var(--paper-line) 36px
+    ),
+    var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+.sheet{
+  position:relative;
+  width:100%;
+  max-width: 560px;
+  background: var(--white);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+  border: 1px solid rgba(31,58,82,0.06);
+}
+
+.margin-line{
+  position:absolute;
+  top:0; bottom:0; left:44px;
+  width:2px;
+  background: var(--margin-red);
+  opacity:0.55;
+}
+
+.holes{
+  position:absolute;
+  top:0; bottom:0; left:16px;
+  width:14px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-evenly;
+  padding: 40px 0;
+}
+.holes span{
+  width:12px; height:12px;
+  border-radius:50%;
+  background: var(--paper);
+  border: 1px solid rgba(31,58,82,0.1);
+}
+
+.content{
+  position:relative;
+  padding: 32px 28px 28px 68px;
+}
+
+/* ============ ШАПКА ============ */
+.eyebrow{
+  font-size: 13px;
+  font-weight:700;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color: var(--margin-red);
+  margin-bottom:8px;
+}
+
+h1{
+  font-family:'Caveat', cursive;
+  font-size: 34px;
+  font-weight:700;
+  line-height:1.15;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.subtitle{
+  font-size:15px;
+  color: var(--ink-soft);
+  line-height:1.5;
+  margin-bottom:20px;
+}
+
+/* ============ ПРОГРЕСС В ВИДЕ "ОЦЕНОК" ============ */
+.progress{
+  display:flex;
+  gap:6px;
+  margin-bottom: 24px;
+}
+.progress .mark{
+  flex:1;
+  height:6px;
+  border-radius:4px;
+  background: rgba(31,58,82,0.1);
+  transition: background 0.3s ease;
+}
+.progress .mark.done{ background: var(--sage); }
+.progress .mark.current{ background: var(--gold); }
+
+.step-label{
+  font-size:13px;
+  color: var(--ink-soft);
+  font-weight:600;
+  margin-bottom: 6px;
+}
+
+/* ============ ВОПРОСЫ ============ */
+.question{
+  font-size: 20px;
+  font-weight:700;
+  color: var(--ink);
+  margin-bottom: 18px;
+  line-height:1.35;
+}
+
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom: 22px;
+}
+
+.option{
+  text-align:left;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(31,58,82,0.14);
+  background: var(--white);
+  font-family:inherit;
+  font-size:15px;
+  font-weight:600;
+  color: var(--ink);
+  cursor:pointer;
+  transition: all 0.15s ease;
+}
+.option:hover{
+  border-color: var(--gold);
+  background: #FFFAF0;
+}
+.option:focus-visible{
+  outline: 3px solid var(--gold);
+  outline-offset:2px;
+}
+.option.selected{
+  border-color: var(--sage);
+  background: #F1F6F1;
+}
+
+.nav-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.btn-back{
+  background:none;
+  border:none;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:600;
+  color: var(--ink-soft);
+  cursor:pointer;
+  padding: 8px;
+}
+.btn-back:disabled{ opacity:0; pointer-events:none; }
+
+/* ============ ФОРМА КОНТАКТА ============ */
+.field{
+  margin-bottom: 14px;
+}
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  color: var(--ink-soft);
+  margin-bottom:6px;
+}
+.field input{
+  width:100%;
+  padding: 13px 14px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(31,58,82,0.16);
+  font-family:inherit;
+  font-size:15px;
+  color:var(--ink);
+  background:var(--paper);
+}
+.field input:focus{
+  outline:2px solid var(--gold);
+  border-color:var(--gold);
+}
+
+.btn-primary{
+  width:100%;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border:none;
+  background: var(--margin-red);
+  color: var(--white);
+  font-family:inherit;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 0 6px 16px rgba(184,74,62,0.28);
+}
+.btn-primary:hover{ transform: translateY(-1px); }
+.btn-primary:disabled{
+  background: rgba(31,58,82,0.2);
+  box-shadow:none;
+  cursor:not-allowed;
+}
+
+.hint{
+  font-size:12.5px;
+  color: var(--ink-soft);
+  margin-top:10px;
+  line-height:1.5;
+}
+
+/* ============ РЕЗУЛЬТАТ ============ */
+.stamp{
+  display:inline-block;
+  font-family:'Caveat', cursive;
+  font-size: 22px;
+  font-weight:700;
+  color: var(--sage);
+  border: 2.5px solid var(--sage);
+  border-radius: 10px;
+  padding: 4px 14px;
+  transform: rotate(-3deg);
+  margin-bottom: 16px;
+}
+
+.result-title{
+  font-family:'Caveat', cursive;
+  font-size: 30px;
+  font-weight:700;
+  color: var(--ink);
+  line-height:1.2;
+  margin-bottom: 14px;
+}
+
+.result-text{
+  font-size:15px;
+  color: var(--ink-soft);
+  line-height:1.6;
+  margin-bottom: 20px;
+}
+
+.result-text b{ color: var(--ink); }
+
+.perks{
+  list-style:none;
+  margin-bottom: 22px;
+}
+.perks li{
+  font-size:14px;
+  color: var(--ink);
+  padding: 8px 0 8px 26px;
+  position:relative;
+  border-bottom: 1px dashed rgba(31,58,82,0.12);
+}
+.perks li:last-child{ border-bottom:none; }
+.perks li::before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  color: var(--sage);
+  font-weight:800;
+}
+
+.screen{ display:none; }
+.screen.active{ display:block; animation: fadeIn 0.35s ease; }
+
+@keyframes fadeIn{
+  from{ opacity:0; transform: translateY(6px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .screen.active{ animation:none; }
+  .btn-primary:hover{ transform:none; }
+}
+
+@media (max-width:420px){
+  .content{ padding: 28px 20px 24px 58px; }
+  h1{ font-size:28px; }
+  .question{ font-size:18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="holes"><span></span><span></span><span></span></div>
+  <div class="margin-line"></div>
+
+  <div class="content">
+
+    <!-- ЭКРАН 0: СТАРТ -->
+    <div class="screen active" id="screen-start">
+      <div class="eyebrow">School Inter · 2 минуты</div>
+      <h1>Какой формат обучения подойдёт вашему ребёнку?</h1>
+      <p class="subtitle">Ответьте на 4 вопроса — подберём подходящий вариант обучения в School Inter и расскажем, с чего лучше начать именно в вашей ситуации.</p>
+      <button class="btn-primary" onclick="goTo(1)">Начать →</button>
+      <p class="hint">Без регистрации. Результат — сразу на экране.</p>
+    </div>
+
+    <!-- ЭКРАН 1 -->
+    <div class="screen" id="screen-1">
+      <div class="progress" id="progress-1"></div>
+      <div class="step-label">Вопрос 1 из 4</div>
+      <div class="question">Что чаще всего заставляет задуматься о смене формата обучения?</div>
+      <div class="options" id="options-1"></div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(0)">← Назад</button>
+      </div>
+    </div>
+
+    <!-- ЭКРАН 2 -->
+    <div class="screen" id="screen-2">
+      <div class="progress" id="progress-2"></div>
+      <div class="step-label">Вопрос 2 из 4</div>
+      <div class="question">В каком классе учится или будет учиться ребёнок?</div>
+      <div class="options" id="options-2"></div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(1)">← Назад</button>
+      </div>
+    </div>
+
+    <!-- ЭКРАН 3 -->
+    <div class="screen" id="screen-3">
+      <div class="progress" id="progress-3"></div>
+      <div class="step-label">Вопрос 3 из 4</div>
+      <div class="question">Что для вашей семьи важнее в учёбе?</div>
+      <div class="options" id="options-3"></div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(2)">← Назад</button>
+      </div>
+    </div>
+
+    <!-- ЭКРАН 4 -->
+    <div class="screen" id="screen-4">
+      <div class="progress" id="progress-4"></div>
+      <div class="step-label">Вопрос 4 из 4</div>
+      <div class="question">Кто обычно будет рядом с ребёнком во время учёбы?</div>
+      <div class="options" id="options-4"></div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(3)">← Назад</button>
+      </div>
+    </div>
+
+    <!-- ЭКРАН РЕЗУЛЬТАТА + ФОРМА -->
+    <div class="screen" id="screen-result">
+      <div class="stamp">✓ подобрано</div>
+      <div class="result-title" id="result-title"></div>
+      <p class="result-text" id="result-text"></p>
+      <ul class="perks">
+        <li>Живые онлайн-уроки, а не запись — с реальным педагогом и одноклассниками</li>
+        <li>Аттестат государственного образца</li>
+        <li>Личный куратор для семьи на связи</li>
+        <li>Школа работает больше 10 лет</li>
+      </ul>
+
+      <div id="form-block">
+        <div class="field">
+          <label for="inp-name">Имя родителя</label>
+          <input type="text" id="inp-name" placeholder="Как к вам обращаться" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="inp-phone">Телефон или Telegram</label>
+          <input type="text" id="inp-phone" placeholder="+7 ... или @username" autocomplete="tel">
+        </div>
+        <button class="btn-primary" id="btn-submit" onclick="submitContact()">Записаться на пробный урок</button>
+        <p class="hint">Мы не передаём данные третьим лицам. Менеджер свяжется в течение дня.</p>
+      </div>
+
+      <div id="thanks-block" style="display:none;">
+        <p class="result-text"><b>Спасибо! Заявка отправлена.</b><br>Наш менеджер свяжется с вами в течение дня, чтобы согласовать удобное время пробного урока.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const state = { q1:null, q2:null, q3:null, q4:null, name:"", phone:"" };
+
+const QUESTIONS = {
+  1: [
+    { text:"Ребёнок часто болеет или много пропускает", key:"health" },
+    { text:"Сложности в классе — буллинг, тревожность, не находит общий язык", key:"social" },
+    { text:"Серьёзно занимается спортом или творчеством", key:"talent" },
+    { text:"Хотим больше свободы — переезды, путешествия, гибкий график", key:"freedom" },
+    { text:"Программа даётся легко, скучно, нужен другой темп", key:"pace" }
+  ],
+  2: [
+    { text:"1–4 класс (начальная школа)", key:"junior" },
+    { text:"5–9 класс (средняя школа)", key:"middle" },
+    { text:"10–11 класс (старшая школа)", key:"senior" },
+    { text:"Скоро в 1 класс", key:"first" }
+  ],
+  3: [
+    { text:"Живое общение с учителем в реальном времени", key:"live" },
+    { text:"Гибкий график, чтобы смотреть уроки в удобное время", key:"flex" },
+    { text:"И то, и другое по возможности", key:"both" }
+  ],
+  4: [
+    { text:"Я или другой взрослый почти всегда рядом", key:"withparent" },
+    { text:"Ребёнок достаточно самостоятельный, справится сам", key:"independent" },
+    { text:"По-разному — иногда помогаю, иногда сам", key:"mixed" }
+  ]
+};
+
+function buildOptions(step){
+  const wrap = document.getElementById('options-'+step);
+  wrap.innerHTML = "";
+  QUESTIONS[step].forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.type = 'button';
+    btn.textContent = opt.text;
+    btn.onclick = () => selectOption(step, opt.key, btn);
+    wrap.appendChild(btn);
+  });
+}
+[1,2,3,4].forEach(buildOptions);
+
+function selectOption(step, key, btnEl){
+  state['q'+step] = key;
+  document.querySelectorAll('#options-'+step+' .option').forEach(b=>b.classList.remove('selected'));
+  btnEl.classList.add('selected');
+  if(step === 4){ renderResult(); }
+  setTimeout(()=> goTo(step === 4 ? 'result' : step+1), 220);
+}
+
+function renderProgress(activeStep){
+  for(let s=1; s<=4; s++){
+    const el = document.getElementById('progress-'+s);
+    if(!el) continue;
+    el.innerHTML = "";
+    for(let i=1;i<=4;i++){
+      const m = document.createElement('div');
+      m.className = 'mark' + (i < s ? ' done' : i === s ? ' current' : '');
+      el.appendChild(m);
+    }
+  }
+}
+[1,2,3,4].forEach(renderProgress);
+
+function goTo(target){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const id = target === 'result' ? 'screen-result' : ('screen-' + target);
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============================================================
+   НАСТРОЙКА: замените на свой адрес формы с formspree.io
+   1. Зарегистрируйтесь на https://formspree.io (бесплатно)
+   2. Создайте новую форму, скопируйте её адрес вида
+      https://formspree.io/f/xxxxxxxx
+   3. Вставьте его сюда вместо строки ниже
+   ============================================================ */
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xjgqqpzz";
+
+async function submitContact(){
+  const name = document.getElementById('inp-name').value.trim();
+  const phone = document.getElementById('inp-phone').value.trim();
+  if(!name || !phone){
+    alert("Пожалуйста, укажите имя и телефон или Telegram — иначе не сможем связаться.");
+    return;
+  }
+  state.name = name;
+  state.phone = phone;
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = "Отправляем...";
+
+  const reason = REASON_LABEL[state.q1] || "-";
+  const grade = {junior:"1–4 класс", middle:"5–9 класс", senior:"10–11 класс", first:"скоро в 1 класс"}[state.q2] || "-";
+  const format = {live:"живое общение важнее", flex:"важнее гибкий график", both:"важно и то, и другое"}[state.q3] || "-";
+  const support = {withparent:"почти всегда рядом взрослый", independent:"ребёнок самостоятельный", mixed:"смешанно"}[state.q4] || "-";
+
+  const payload = {
+    name: name,
+    phone: phone,
+    reason: reason,
+    grade: grade,
+    format: format,
+    support: support,
+    _subject: "Новая заявка с квиза School Inter"
+  };
+
+  try{
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if(res.ok){
+      document.getElementById('form-block').style.display = "none";
+      document.getElementById('thanks-block').style.display = "block";
+    } else {
+      throw new Error("Ошибка отправки");
+    }
+  } catch(err){
+    alert("Не получилось отправить заявку. Проверьте соединение и попробуйте ещё раз, либо напишите нам напрямую в Telegram.");
+    btn.disabled = false;
+    btn.textContent = "Записаться на пробный урок";
+  }
+}
+
+const REASON_LABEL = {
+  health: "частые болезни и пропуски",
+  social: "сложности в коллективе",
+  talent: "серьёзный спорт или творчество",
+  freedom: "желание гибкого графика и свободы",
+  pace: "нужен другой темп программы"
+};
+
+const RESULTS = {
+  health: {
+    title: "Учёба без гонки за пропущенным",
+    text: "Похоже, вашему ребёнку подойдёт формат, где болезнь не превращается в стресс из-за отставания. В School Inter уроки идут в мини-классах в прямом эфире, а если ребёнок пропустил день — куратор поможет наверстать без давления и без беготни по репетиторам."
+  },
+  social: {
+    title: "Учёба без лишнего напряжения",
+    text: "Для ребёнка, которому непросто в классе, важна атмосфера без давления. В School Inter небольшие группы и живой контакт с учителем — при этом никакой изоляции: одноклассники и совместные уроки остаются, просто в более комфортном формате."
+  },
+  talent: {
+    title: "Учёба, которая подстраивается под расписание, а не наоборот",
+    text: "Если спорт или творчество занимают половину дня — расписание online-уроков в School Inter можно выстроить вокруг тренировок и выступлений, а не наоборот. Аттестат при этом остаётся государственного образца, без компромиссов."
+  },
+  freedom: {
+    title: "Учёба, которая едет с вами",
+    text: "Живые уроки School Inter проходят онлайн — значит, учёба продолжается, даже если семья в другом городе или стране. Ребёнок не выпадает из процесса и не теряет контакт с классом и учителями."
+  },
+  pace: {
+    title: "Учёба в своём темпе — без скуки и без гонки",
+    text: "Если материал даётся легко, важно, чтобы школа не тормозила, а помогала расти быстрее. В School Inter учитель и куратор видят прогресс каждого ученика лично и могут предложить более быстрый темп там, где это уместно."
+  }
+};
+
+function renderResult(){
+  const r = RESULTS[state.q1] || RESULTS.freedom;
+  document.getElementById('result-title').textContent = r.title;
+  document.getElementById('result-text').innerHTML =
+    r.text + " Учитывая, что важнее всего для вас — <b>" +
+    (state.q3 === 'live' ? "живое общение с учителем" : state.q3 === 'flex' ? "гибкий график" : "и то, и другое") +
+    "</b> — это как раз то, как устроены уроки в School Inter.";
+}
+
+</script>
+
+</body>
+</html>
