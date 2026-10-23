@@ -239,7 +239,7 @@ h1 .accent{color:var(--orange)}
 /* ===================== НАСТРОЙКИ ===================== */
 const LEADS_URL = "https://script.google.com/macros/s/AKfycbxXMIzvWy7uwxla4jMIQo4EtdNPUP-5ZKVLwpzXtWTjnTPnJwrIcCnmWTTVDHwuxrce/exec";                  // адрес из Google Apps Script (заканчивается на /exec) — заявки идут в Google-таблицу
 const SCHOOL_HANDLE = "@School_inter";   // ник школы в Instagram — замените на свой
-const LOGO_URL = "logo.png";             // загрузите логотип рядом с этим файлом под именем logo.png
+const LOGO_URL = "logo.svg";             // логотип лежит рядом с этим файлом на GitHub под именем logo.svg
 
 /* Необязательно: анонимный подсчёт результатов (для итогового поста «самый популярный монстр»).
    Оставьте пустыми, если не нужно. Как заполнить — см. инструкцию в пакете материалов. */
@@ -621,6 +621,30 @@ function loadImg(src){
     img.src = src;
   });
 }
+/* Логотип: SVG без явных размеров подгоняем по viewBox, иначе он рисуется обрезанным */
+async function loadLogo(){
+  if(/\.svg(\?|$)/i.test(LOGO_URL)){
+    try{
+      const txt = await (await fetch(LOGO_URL)).text();
+      const doc = new DOMParser().parseFromString(txt, 'image/svg+xml');
+      const svg = doc.documentElement;
+      let w = parseFloat(svg.getAttribute('width')), h = parseFloat(svg.getAttribute('height'));
+      const vb = (svg.getAttribute('viewBox') || '').trim().split(/[\s,]+/).map(Number);
+      if(vb.length === 4 && vb[2] > 0 && vb[3] > 0){
+        const ratio = vb[2] / vb[3];
+        w = 1200; h = Math.round(w / ratio);
+      } else if(!(w > 0 && h > 0)){
+        w = 600; h = 200;
+      }
+      svg.setAttribute('width', w);
+      svg.setAttribute('height', h);
+      if(!svg.getAttribute('xmlns')) svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+      const out = new XMLSerializer().serializeToString(svg);
+      return await svgToImg(out);
+    }catch(e){ /* упадём на обычную загрузку ниже */ }
+  }
+  return loadImg(LOGO_URL);
+}
 function rr(ctx,x,y,w,h,r){
   ctx.beginPath();
   ctx.moveTo(x+r,y);
@@ -675,7 +699,7 @@ async function buildCard(withLogo){
     svgToImg(svgFull('bat')), svgToImg(svgFull('moon'))
   ]);
   let logoImg = null;
-  if(withLogo){ try{ logoImg = await loadImg(LOGO_URL); }catch(e){ logoImg = null; } }
+  if(withLogo){ try{ logoImg = await loadLogo(); }catch(e){ logoImg = null; } }
 
   // фон
   const g = ctx.createLinearGradient(0,0,0,H);
@@ -746,8 +770,10 @@ async function buildCard(withLogo){
   ctx.lineWidth = 7; ctx.strokeStyle = INK; ctx.stroke();
   if(logoImg){
     const maxW = 460, maxH = 90;
-    const k = Math.min(maxW/logoImg.width, maxH/logoImg.height);
-    const lw = logoImg.width*k, lh = logoImg.height*k;
+    const iw = logoImg.naturalWidth || logoImg.width || 300;
+    const ih = logoImg.naturalHeight || logoImg.height || 150;
+    const k = Math.min(maxW/iw, maxH/ih);
+    const lw = iw*k, lh = ih*k;
     ctx.drawImage(logoImg, 540 - lw/2, 1558 - lh/2, lw, lh);
   } else {
     ctx.fillStyle = '#6A35E8';
