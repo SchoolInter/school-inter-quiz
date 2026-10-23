@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Какой ты монстр в школе? — School Inter</title>
+<meta property="og:title" content="Какой ты монстр в школе? 🎃 Тест от School Inter">
+<meta property="og:description" content="7 вопросов — и узнаете, какой хэллоуинский монстр скрывается в вас или в вашем ребёнке. Проходите вместе!">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#150C28;
+  --bg2:#2A1360;
+  --orange:#FF8A2B;
+  --orange-soft:#FFB067;
+  --yellow:#FFE27A;
+  --violet:#8F6BFF;
+  --cream:#FFF3E0;
+  --muted:#C9BCEA;
+  --ink:#2A1458;
+  --line:rgba(255,243,224,0.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{
+  font-family:'Manrope','Segoe UI',sans-serif;
+  color:var(--cream);
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 12% 6%, rgba(255,138,43,0.22), transparent 36%),
+    radial-gradient(circle at 90% 94%, rgba(143,107,255,0.28), transparent 40%),
+    linear-gradient(170deg,var(--bg2),var(--bg));
+  background-attachment:fixed;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px 16px 40px;
+  position:relative;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- декор фона ---------- */
+.fbat{position:fixed;left:-120px;opacity:.55;pointer-events:none;z-index:0;animation:fly linear infinite}
+.fbat svg{display:block;width:100%;height:auto}
+@keyframes fly{
+  0%{transform:translateX(0) translateY(0)}
+  25%{transform:translateX(30vw) translateY(-16px)}
+  50%{transform:translateX(60vw) translateY(10px)}
+  75%{transform:translateX(90vw) translateY(-12px)}
+  100%{transform:translateX(125vw) translateY(0)}
+}
+.corner{position:fixed;pointer-events:none;z-index:0;display:none}
+.corner svg{display:block;width:100%;height:auto}
+@media (min-width:760px){
+  .corner{display:block}
+  .corner.pk{left:3vw;bottom:2vh;width:150px}
+  .corner.gh{right:4vw;top:6vh;width:130px;animation:bob 4s ease-in-out infinite}
+  .corner.pk2{right:6vw;bottom:3vh;width:100px}
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.wrap{width:100%;max-width:520px;position:relative;z-index:1}
+.card{
+  background:rgba(43,26,85,0.9);
+  border:2px solid rgba(255,243,224,0.18);
+  border-radius:26px;
+  padding:0 24px 26px;
+  box-shadow:0 18px 50px rgba(0,0,0,0.45);
+  overflow:hidden;
+}
+.scene{margin:0 -24px 20px;aspect-ratio:360/150;overflow:hidden;border-bottom:3px solid var(--ink)}
+.scene > svg{display:block;width:100%;height:100%}
+
+.eyebrow{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+h1{font-family:'Caveat',cursive;font-size:44px;line-height:1.02;font-weight:700;margin-bottom:12px}
+h1 .accent{color:var(--orange)}
+.lead{font-size:15.5px;line-height:1.6;color:var(--muted);margin-bottom:18px}
+.lead b{color:var(--cream)}
+
+.lineup{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:20px}
+.mini{aspect-ratio:1;border-radius:14px;border:2.5px solid var(--ink);padding:3px;display:flex;align-items:center;justify-content:center}
+.mini svg{width:100%;height:100%;display:block}
+
+.btn{
+  display:block;width:100%;text-align:center;text-decoration:none;
+  padding:15px 18px;border-radius:16px;border:3px solid var(--ink);cursor:pointer;
+  font-family:inherit;font-size:16px;font-weight:800;
+  background:var(--orange);color:#2A1100;
+  box-shadow:0 5px 0 var(--ink);
+  transition:transform .1s ease, box-shadow .1s ease;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 0 var(--ink)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;color:var(--cream);border-color:rgba(255,243,224,0.3);box-shadow:none;font-weight:700}
+.btn.violet{background:var(--violet);color:#fff}
+.btn.yellow{background:var(--yellow);color:#2A1100}
+.btn + .btn{margin-top:12px}
+.hint{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.5;text-align:center}
+
+.screen{display:none}
+.screen.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.bar{display:flex;gap:5px;margin-bottom:16px}
+.bar i{flex:1;height:8px;border-radius:5px;background:rgba(255,243,224,0.14);border:1.5px solid var(--ink)}
+.bar i.done{background:var(--orange)}
+.bar i.cur{background:var(--yellow)}
+.stop{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--yellow);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.q{font-size:21px;font-weight:800;line-height:1.3;margin-bottom:18px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{
+  text-align:left;padding:14px 16px;border-radius:16px;
+  border:2px solid rgba(255,243,224,0.22);background:rgba(255,243,224,0.05);
+  color:var(--cream);font-family:inherit;font-size:15px;font-weight:600;line-height:1.4;
+  cursor:pointer;transition:all .12s ease;box-shadow:0 3px 0 rgba(0,0,0,0.3);
+}
+.opt:hover{border-color:var(--orange);background:rgba(255,138,43,0.12)}
+.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.opt.sel{border-color:var(--orange);background:rgba(255,138,43,0.28)}
+.back{background:none;border:none;color:var(--muted);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-top:16px;padding:6px}
+.back:disabled{opacity:0;pointer-events:none}
+
+/* ---------- результат ---------- */
+.res-top{display:flex;gap:16px;align-items:center;margin-bottom:14px}
+.res-art{flex:0 0 132px;width:132px;height:132px;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 4px var(--ink);display:flex;align-items:center;justify-content:center;padding:6px;overflow:hidden}
+.res-art svg{width:100%;height:100%;display:block}
+.res-label{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--orange)}
+.res-name{font-family:'Caveat',cursive;font-size:42px;font-weight:700;line-height:1.02;margin:2px 0 4px}
+.res-tag{font-size:15px;font-weight:700;color:var(--orange-soft)}
+.res-desc{font-size:15px;line-height:1.6;color:var(--cream);margin-bottom:16px}
+.facts{display:grid;gap:10px;margin-bottom:22px}
+.fact{background:rgba(255,243,224,0.06);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+.fact span{display:block;font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.fact p{font-size:14.5px;line-height:1.5}
+.card-title{font-family:'Caveat',cursive;font-size:30px;font-weight:700;line-height:1.1;margin-bottom:4px;text-align:center}
+.card-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:12px}
+.card-prev{display:block;width:62%;margin:0 auto 16px;border-radius:18px;border:3px solid var(--ink);box-shadow:0 8px 24px rgba(0,0,0,0.4);background:rgba(255,243,224,0.06);min-height:200px}
+.divider{height:2px;background:var(--line);margin:24px 0;border-radius:2px}
+.box-title{font-family:'Caveat',cursive;font-size:32px;font-weight:700;line-height:1.1;margin-bottom:8px}
+.box-text{font-size:14.5px;line-height:1.6;color:var(--muted);margin-bottom:14px}
+
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:5px}
+.field input{
+  width:100%;padding:13px 14px;border-radius:12px;border:2px solid var(--line);
+  background:rgba(255,243,224,0.07);color:var(--cream);font-family:inherit;font-size:15px;
+}
+.field input::placeholder{color:rgba(201,188,234,0.6)}
+.field input:focus{outline:2px solid var(--orange);border-color:var(--orange)}
+.ok{font-size:15px;line-height:1.6;color:var(--cream)}
+
+@media (prefers-reduced-motion:reduce){
+  .screen.active{animation:none}.btn:hover{transform:none}
+  .fbat,.corner.gh{animation:none}.fbat{display:none}
+}
+@media (max-width:420px){h1{font-size:38px}.q{font-size:19px}.res-name{font-size:36px}.res-art{flex-basis:110px;width:110px;height:110px}}
+</style>
+</head>
+<body>
+
+<div id="decor"></div>
+
+<div class="wrap">
+<div class="card">
+
+  <div class="scene" id="scene"></div>
+
+  <!-- СТАРТ -->
+  <div class="screen active" id="s-start">
+    <div class="eyebrow">School Inter · Хэллоуин</div>
+    <h1>Какой ты <span class="accent">монстр</span> в школе?</h1>
+    <p class="lead">Добро пожаловать в <b>Страшную школу</b>! Вас ждут 7 остановок, после которых вы узнаете о себе (и о своём ребёнке) много нового. <b>Проходите вместе — результаты могут удивить!</b></p>
+    <div class="lineup" id="lineup"></div>
+    <button class="btn" onclick="startQuiz()">Войти в школу →</button>
+    <p class="hint">Тест шуточный. Занимает 2 минуты.</p>
+  </div>
+
+  <!-- ВОПРОСЫ -->
+  <div class="screen" id="s-q">
+    <div class="bar" id="bar"></div>
+    <div class="stop" id="stop"></div>
+    <div class="q" id="q"></div>
+    <div class="opts" id="opts"></div>
+    <button class="back" id="back" onclick="goBack()">← Назад</button>
+  </div>
+
+  <!-- РЕЗУЛЬТАТ -->
+  <div class="screen" id="s-res">
+    <div class="res-top">
+      <div class="res-art" id="r-art"></div>
+      <div>
+        <div class="res-label">Вы —</div>
+        <div class="res-name" id="r-name"></div>
+        <div class="res-tag" id="r-tag"></div>
+      </div>
+    </div>
+    <p class="res-desc" id="r-desc"></p>
+    <div class="facts">
+      <div class="fact"><span>Суперсила в учёбе</span><p id="r-power"></p></div>
+      <div class="fact"><span>Слабое место</span><p id="r-weak"></p></div>
+      <div class="fact"><span>Что помогает учиться</span><p id="r-tip"></p></div>
+      <div class="fact"><span>Дружит с</span><p id="r-friend"></p></div>
+    </div>
+
+    <div class="card-title">Ваша карточка для сторис</div>
+    <div class="card-sub">Нажмите кнопку или удерживайте картинку, чтобы сохранить</div>
+    <img class="card-prev" id="card-prev" alt="Карточка с результатом">
+
+    <button class="btn yellow" onclick="shareCard()">📲 Сохранить картинку для сторис</button>
+    <button class="btn violet" onclick="shareLink()">Отправить тест другу</button>
+    <button class="btn ghost" onclick="startQuiz()">Пройти ещё раз</button>
+    <p class="hint" id="share-hint"></p>
+
+    <div class="divider"></div>
+
+    <div id="lead-block">
+      <div class="box-title">Хотите попробовать на практике?</div>
+      <p class="box-text">Оставьте контакт — расскажем про пробные уроки в School Inter и ответим на любые вопросы.</p>
+      <div class="field">
+        <label for="f-name">Имя</label>
+        <input id="f-name" type="text" placeholder="Как к вам обращаться" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="f-phone">Телефон или Telegram</label>
+        <input id="f-phone" type="text" placeholder="+7 ... или @username" autocomplete="tel">
+      </div>
+      <button class="btn" id="f-btn" onclick="sendLead()">Отправить</button>
+    </div>
+    <div id="lead-ok" style="display:none"><p class="ok"><b>Спасибо!</b> Мы получили ваш контакт и скоро напишем.</p></div>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* ===================== НАСТРОЙКИ ===================== */
+const LEADS_URL = "https://script.google.com/macros/s/AKfycbxXMIzvWy7uwxla4jMIQo4EtdNPUP-5ZKVLwpzXtWTjnTPnJwrIcCnmWTTVDHwuxrce/exec";                  // адрес из Google Apps Script (заканчивается на /exec) — заявки идут в Google-таблицу
+const SCHOOL_HANDLE = "@School_inter";   // ник школы в Instagram — замените на свой
+const LOGO_URL = "logo.png";             // загрузите логотип рядом с этим файлом под именем logo.png
+
+/* Необязательно: анонимный подсчёт результатов (для итогового поста «самый популярный монстр»).
+   Оставьте пустыми, если не нужно. Как заполнить — см. инструкцию в пакете материалов. */
+const STATS_FORM_URL = "";   // https://docs.google.com/forms/d/e/.../formResponse
+const STATS_ENTRY    = "";   // entry.1234567890
+/* ====================================================== */
+
+const INK = "#2A1458";
+
+/* ---------- Иллюстрации (оригинальные мультяшные персонажи) ---------- */
+const ART = {
+  ghost:{ vb:"0 0 200 200", inner:`
+    <ellipse cx="42" cy="126" rx="15" ry="9" transform="rotate(-30 42 126)" fill="#fff" stroke="${INK}" stroke-width="5"/>
+    <ellipse cx="158" cy="126" rx="15" ry="9" transform="rotate(30 158 126)" fill="#fff" stroke="${INK}" stroke-width="5"/>
+    <path d="M48 172V92C48 50 72 26 100 26S152 50 152 92V172L135 158L118 174L101 158L84 174L67 158Z" fill="#fff" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
+    <ellipse cx="82" cy="92" rx="8" ry="12" fill="${INK}"/><ellipse cx="118" cy="92" rx="8" ry="12" fill="${INK}"/>
+    <circle cx="85" cy="87" r="3.2" fill="#fff"/><circle cx="121" cy="87" r="3.2" fill="#fff"/>
+    <circle cx="68" cy="113" r="8" fill="#FF9EC7" opacity=".85"/><circle cx="132" cy="113" r="8" fill="#FF9EC7" opacity=".85"/>
+    <ellipse cx="100" cy="120" rx="9" ry="11" fill="${INK}"/>`},
+  pumpkin:{ vb:"0 0 200 200", inner:`
+    <ellipse cx="100" cy="116" rx="80" ry="62" fill="#FF8A2B" stroke="${INK}" stroke-width="5"/>
+    <path d="M100 56C74 62 62 112 70 170M100 56C126 62 138 112 130 170" fill="none" stroke="#E06A00" stroke-width="5" stroke-linecap="round"/>
+    <path d="M92 58C90 42 96 32 108 26L116 38C108 42 108 50 110 58Z" fill="#5FAE3B" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M66 104L80 84L94 104Z" fill="#FFE27A" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M106 104L120 84L134 104Z" fill="#FFE27A" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M62 128Q100 172 138 128L127 135L118 125L108 138L100 126L92 138L82 125L73 135Z" fill="#FFE27A" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`},
+  bat:{ vb:"0 0 120 70", inner:`
+    <path d="M60 20C52 4 34 2 6 14C18 18 22 28 22 40C30 32 40 32 46 44L52 38L60 48L68 38L74 44C80 32 90 32 98 40C98 28 102 18 114 14C86 2 68 4 60 20Z" fill="${INK}" stroke="#6B45B5" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M53 22L52 8L59 17ZM67 22L68 8L61 17Z" fill="${INK}"/>
+    <circle cx="55" cy="25" r="2.6" fill="#FFE27A"/><circle cx="65" cy="25" r="2.6" fill="#FFE27A"/>`},
+  moon:{ vb:"0 0 100 100", inner:`
+    <circle cx="50" cy="50" r="44" fill="#FFE27A" stroke="${INK}" stroke-width="4"/>
+    <circle cx="34" cy="38" r="9" fill="#F4C84F"/><circle cx="62" cy="64" r="12" fill="#F4C84F"/><circle cx="66" cy="32" r="6" fill="#F4C84F"/>`},
+  vampire:{ vb:"0 0 200 200", inner:`
+    <path d="M18 198C22 150 52 128 100 128C148 128 178 150 182 198Z" fill="${INK}"/>
+    <path d="M62 136L36 94L82 118ZM138 136L164 94L118 118Z" fill="#D7263D" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <ellipse cx="100" cy="102" rx="50" ry="54" fill="#F7E7F3" stroke="${INK}" stroke-width="5"/>
+    <path d="M50 98C48 48 90 36 100 34C112 36 152 48 150 98C138 78 120 68 100 84C80 68 62 78 50 98Z" fill="#1B1033" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <ellipse cx="80" cy="106" rx="11" ry="13" fill="#fff" stroke="${INK}" stroke-width="3"/><ellipse cx="120" cy="106" rx="11" ry="13" fill="#fff" stroke="${INK}" stroke-width="3"/>
+    <circle cx="82" cy="108" r="6.5" fill="#D7263D"/><circle cx="122" cy="108" r="6.5" fill="#D7263D"/>
+    <circle cx="84" cy="105" r="2.4" fill="#fff"/><circle cx="124" cy="105" r="2.4" fill="#fff"/>
+    <path d="M68 92L90 90M132 92L110 90" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="64" cy="124" r="8" fill="#FF9EC7" opacity=".8"/><circle cx="136" cy="124" r="8" fill="#FF9EC7" opacity=".8"/>
+    <path d="M78 128Q100 150 122 128Z" fill="#7A1030" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M85 131L90 145L96 133ZM115 131L110 145L104 133Z" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`},
+  werewolf:{ vb:"0 0 200 200", inner:`
+    <path d="M42 84L48 24L90 58Z" fill="#8791B0" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M158 84L152 24L110 58Z" fill="#8791B0" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M54 70L56 42L76 58ZM146 70L144 42L124 58Z" fill="#FFB3C7"/>
+    <ellipse cx="100" cy="106" rx="60" ry="56" fill="#8791B0" stroke="${INK}" stroke-width="5"/>
+    <ellipse cx="100" cy="128" rx="34" ry="27" fill="#E3E8F5" stroke="${INK}" stroke-width="4"/>
+    <ellipse cx="100" cy="114" rx="12" ry="8.5" fill="${INK}"/>
+    <path d="M100 122V132M84 136Q100 150 116 136" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M93 141Q100 160 107 141Z" fill="#FF6B8B" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <ellipse cx="74" cy="94" rx="12" ry="14" fill="#FFE27A" stroke="${INK}" stroke-width="4"/><ellipse cx="126" cy="94" rx="12" ry="14" fill="#FFE27A" stroke="${INK}" stroke-width="4"/>
+    <circle cx="76" cy="96" r="5.5" fill="${INK}"/><circle cx="124" cy="96" r="5.5" fill="${INK}"/>
+    <circle cx="78" cy="93" r="2" fill="#fff"/><circle cx="126" cy="93" r="2" fill="#fff"/>
+    <path d="M62 80L86 80M138 80L114 80" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`},
+  witch:{ vb:"0 0 200 200", inner:`
+    <path d="M44 92C28 132 38 160 52 178C62 152 58 122 62 102ZM156 92C172 132 162 160 148 178C138 152 142 122 138 102Z" fill="#FF8A2B" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <ellipse cx="100" cy="112" rx="48" ry="50" fill="#9BE06F" stroke="${INK}" stroke-width="5"/>
+    <ellipse cx="100" cy="78" rx="70" ry="16" fill="#3A1A7A" stroke="${INK}" stroke-width="5"/>
+    <path d="M64 76C70 52 88 32 118 8C116 32 128 54 136 76Z" fill="#3A1A7A" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M66 70Q100 84 134 70L136 78Q100 92 64 78Z" fill="#FF8A2B" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="94" y="72" width="14" height="14" rx="2" fill="#FFE27A" stroke="${INK}" stroke-width="3"/>
+    <ellipse cx="80" cy="108" rx="10" ry="12" fill="#fff" stroke="${INK}" stroke-width="3"/><ellipse cx="120" cy="108" rx="10" ry="12" fill="#fff" stroke="${INK}" stroke-width="3"/>
+    <circle cx="82" cy="110" r="5.5" fill="${INK}"/><circle cx="122" cy="110" r="5.5" fill="${INK}"/>
+    <circle cx="84" cy="107" r="2" fill="#fff"/><circle cx="124" cy="107" r="2" fill="#fff"/>
+    <path d="M68 94L90 94M132 94L110 94" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M100 114Q90 128 104 128" fill="#82CC59" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="66" cy="128" r="8" fill="#FF9EC7" opacity=".8"/><circle cx="134" cy="128" r="8" fill="#FF9EC7" opacity=".8"/>
+    <path d="M80 140Q100 156 120 140" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`},
+  zombie:{ vb:"0 0 200 200", inner:`
+    <path d="M48 102C48 58 74 42 100 42C128 42 152 58 152 102C152 134 130 158 100 158C70 158 48 134 48 102Z" fill="#A9D98B" stroke="${INK}" stroke-width="5"/>
+    <path d="M56 76L50 46L74 60L84 36L100 58L116 34L124 60L150 46L146 78C130 60 70 60 56 76Z" fill="#6B4F3A" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M112 54L132 80" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+    <path d="M114 66L124 60M120 74L130 68M126 82L136 76" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="78" cy="102" r="15" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="124" cy="104" r="10.5" fill="#fff" stroke="${INK}" stroke-width="4"/>
+    <circle cx="82" cy="106" r="6" fill="${INK}"/><circle cx="121" cy="106" r="4.5" fill="${INK}"/>
+    <path d="M62 86L90 90M112 94L138 90" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M70 130Q102 156 134 128Q134 148 102 152Q70 150 70 130Z" fill="#7A1030" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <rect x="86" y="136" width="10" height="11" fill="#fff" stroke="${INK}" stroke-width="2.5"/><rect x="108" y="138" width="10" height="11" fill="#fff" stroke="${INK}" stroke-width="2.5"/>
+    <circle cx="64" cy="126" r="7" fill="#7FB868" opacity=".9"/>`},
+  mummy:{ vb:"0 0 200 200", inner:`
+    <defs><clipPath id="mh"><ellipse cx="100" cy="100" rx="56" ry="60"/></clipPath></defs>
+    <ellipse cx="100" cy="100" rx="56" ry="60" fill="#F3E5C3" stroke="${INK}" stroke-width="5"/>
+    <g clip-path="url(#mh)">
+      <rect x="30" y="38" width="140" height="15" fill="#FFFDF3" stroke="${INK}" stroke-width="3" transform="rotate(-10 100 45)"/>
+      <rect x="30" y="58" width="140" height="15" fill="#FFFDF3" stroke="${INK}" stroke-width="3" transform="rotate(8 100 65)"/>
+      <rect x="40" y="82" width="120" height="32" fill="#4B2E83"/>
+      <rect x="30" y="120" width="140" height="15" fill="#FFFDF3" stroke="${INK}" stroke-width="3" transform="rotate(-8 100 127)"/>
+      <rect x="30" y="140" width="140" height="15" fill="#FFFDF3" stroke="${INK}" stroke-width="3" transform="rotate(10 100 147)"/>
+      <rect x="30" y="160" width="140" height="15" fill="#FFFDF3" stroke="${INK}" stroke-width="3" transform="rotate(-6 100 167)"/>
+    </g>
+    <ellipse cx="80" cy="98" rx="13" ry="14" fill="#fff" stroke="${INK}" stroke-width="3"/><ellipse cx="120" cy="98" rx="13" ry="14" fill="#fff" stroke="${INK}" stroke-width="3"/>
+    <circle cx="82" cy="100" r="6.5" fill="${INK}"/><circle cx="122" cy="100" r="6.5" fill="${INK}"/>
+    <circle cx="84" cy="97" r="2.4" fill="#fff"/><circle cx="124" cy="97" r="2.4" fill="#fff"/>
+    <path d="M68 84L90 84M132 84L110 84" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`}
+};
+
+function svgFull(k){
+  const a = ART[k]; const p = a.vb.split(' ');
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${a.vb}" width="${p[2]}" height="${p[3]}">${a.inner}</svg>`;
+}
+function svgNested(k,x,y,w,h){
+  const a = ART[k];
+  return `<svg x="${x}" y="${y}" width="${w}" height="${h}" viewBox="${a.vb}">${a.inner}</svg>`;
+}
+
+/* ---------- Персонажи ---------- */
+const CHARS = {
+  vampire:{
+    short:"ВАМПИР", color:"#FF5C7A", name:"Вампир", tag:"Ночной перфекционист",
+    cap:"Утром не беспокоить! Я учусь по ночам",
+    desc:"Вы любите всё делать красиво и в своё время. Днём — режим энергосбережения, а вечером включается настоящий мозг. Если дать вам интересную тему, вы уйдёте в неё с головой и сделаете лучше всех.",
+    power:"Глубокая концентрация и стиль: доклады и проекты у вас выглядят как произведение искусства.",
+    weak:"Утренние уроки. До 10:00 вы существуете чисто технически.",
+    tip:"Расписание, подстроенное под личные биоритмы, и красивая подача материала.",
+    friend:"Привидение — оба цените тишину."
+  },
+  ghost:{
+    short:"ПРИВИДЕНИЕ", color:"#7CD6FF", name:"Привидение", tag:"Тихий наблюдатель",
+    cap:"Тссс... Я всё слышу, но молчу",
+    desc:"Вы замечаете то, что пропускают другие. Не любите шум и суету, зато умеете думать глубоко и самостоятельно. Если вас не торопить, вы приходите к самым неожиданным и верным выводам.",
+    power:"Внимательность и умение работать в тишине: вы видите детали, которые остальные не замечают.",
+    weak:"Выступления перед всем классом и ответы «здесь и сейчас».",
+    tip:"Спокойная обстановка, небольшая группа и учитель, который даёт время подумать.",
+    friend:"Ведьма — она всегда оценит ваши идеи."
+  },
+  werewolf:{
+    short:"ОБОРОТЕНЬ", color:"#FFB13B", name:"Оборотень", tag:"Душа команды",
+    cap:"У-у-у! Давайте обсудим это всем классом!",
+    desc:"Энергии у вас хватит на весь класс. Вы лучше всего учитесь, когда можно обсуждать, спорить и объяснять другим. Одиночная зубрёжка — не ваше, а вот командный проект — ваша стихия.",
+    power:"Живое общение: вы объясняете так, что понимают все, и заряжаете класс энергией.",
+    weak:"Долго сидеть молча над одним заданием.",
+    tip:"Живые уроки с обсуждениями и общением с учителем и одноклассниками.",
+    friend:"Зомби — с вами ему всегда весело."
+  },
+  witch:{
+    short:"ВЕДЬМА", color:"#B38BFF", name:"Ведьма / Колдун", tag:"Творец и экспериментатор",
+    cap:"Домашка? Я превращу её в зелье!",
+    desc:"Вы запоминаете через образы, ассоциации и эксперименты. Скучный пересказ учебника вам не подходит, зато если дать задачу с фантазией, вы придумаете три решения вместо одного.",
+    power:"Креативность: вы находите нестандартные ходы там, где остальные упираются в стену.",
+    weak:"Однообразные задания и «просто выучи наизусть».",
+    tip:"Практика, проекты и творческие задания вместо сухой теории.",
+    friend:"Мумия — она вовремя вернёт вас к конспекту."
+  },
+  zombie:{
+    short:"ЗОМБИ", color:"#7EE08F", name:"Зомби", tag:"Стойкий оптимист",
+    cap:"Ещё пять минут... и я точно встану!",
+    desc:"Утро — не ваше время, зато вы никогда не сдаётесь. Отложить на последний момент, а потом героически спасти ситуацию — это про вас. С чувством юмора у вас всё отлично, и это спасает в любой контрольной.",
+    power:"Стрессоустойчивость и юмор: вы не паникуете, когда другие уже сдались.",
+    weak:"Планирование заранее и ранние подъёмы.",
+    tip:"Гибкий график, небольшие шаги вместо больших задач и учитель с чувством юмора.",
+    friend:"Оборотень — вместе вы свернёте горы."
+  },
+  mummy:{
+    short:"МУМИЯ", color:"#FFD95A", name:"Мумия", tag:"Мастер порядка",
+    cap:"Конспект завёрнут, дедлайн под контролем!",
+    desc:"У вас всегда аккуратные конспекты, цветные закладки и план на неделю. Вы любите, когда всё понятно: что, когда и зачем. Именно вы обычно знаете, какое задание было на дом.",
+    power:"Системность: вы доводите дела до конца и редко что-то забываете.",
+    weak:"Неожиданные изменения плана. Лучше предупредить заранее.",
+    tip:"Чёткая структура уроков, понятное расписание и куратор, с которым всё заранее ясно.",
+    friend:"Ведьма — она научит вас импровизировать."
+  }
+};
+
+const Q = [
+  { q:"Звенит будильник в 7 утра. Что вы делаете?", a:[
+    {t:"Уже давно проснулся, у меня всё по плану", k:"mummy"},
+    {t:"Нажимаю «ещё пять минут» раз пять", k:"zombie"},
+    {t:"Я сова, моё время — вечер", k:"vampire"},
+    {t:"Лежу и придумываю новую историю или идею", k:"witch"},
+    {t:"Вскакиваю и сразу пишу друзьям в чат", k:"werewolf"},
+    {t:"Тихо просыпаюсь и не разговариваю, пока не выпью чай", k:"ghost"}
+  ]},
+  { q:"Завтра контрольная. Как готовитесь?", a:[
+    {t:"Составляю план и конспект по пунктам", k:"mummy"},
+    {t:"Учу ночью, когда всё тихо", k:"vampire"},
+    {t:"Объясняю тему вслух другу", k:"werewolf"},
+    {t:"Придумываю смешные ассоциации, чтобы запомнить", k:"witch"},
+    {t:"Откладываю до последнего, потом героически спасаюсь", k:"zombie"},
+    {t:"Читаю один в тишине, в наушниках", k:"ghost"}
+  ]},
+  { q:"Какой урок вы назовёте идеальным?", a:[
+    {t:"Чёткая структура, всё по порядку", k:"mummy"},
+    {t:"Эксперименты и творческие задания", k:"witch"},
+    {t:"Обсуждения, споры, работа в командах", k:"werewolf"},
+    {t:"Когда можно подумать и не торопиться", k:"ghost"},
+    {t:"Интересный учитель и красивая подача", k:"vampire"},
+    {t:"С шутками и вовремя объявленной переменой", k:"zombie"}
+  ]},
+  { q:"Что лежит у вас на рабочем столе?", a:[
+    {t:"Ежедневник, стикеры, всё по цветам", k:"mummy"},
+    {t:"Свечка, чашка чая и приглушённый свет", k:"vampire"},
+    {t:"Телефон с открытым чатом класса", k:"werewolf"},
+    {t:"Блокнот с рисунками на полях", k:"witch"},
+    {t:"Кружка, крошки и 15 вкладок в браузере", k:"zombie"},
+    {t:"Наушники и книга", k:"ghost"}
+  ]},
+  { q:"Групповой проект. Какая у вас роль?", a:[
+    {t:"Организатор: распределю задачи и сроки", k:"mummy"},
+    {t:"Идеи и дизайн: сделаю так, чтобы все ахнули", k:"witch"},
+    {t:"Спикер: расскажу всё классу", k:"werewolf"},
+    {t:"Исследователь: найду факты в тишине", k:"ghost"},
+    {t:"Стратег: продумаю всё, но выступать не люблю", k:"vampire"},
+    {t:"Разрядка: пошучу, чтобы команда не раскисла", k:"zombie"}
+  ]},
+  { q:"Идеальный вечер после учёбы?", a:[
+    {t:"Проверить план на завтра и спокойно отдохнуть", k:"mummy"},
+    {t:"Фильм ночью с пледом и чаем", k:"vampire"},
+    {t:"Погулять или поиграть с друзьями", k:"werewolf"},
+    {t:"Порисовать, сочинять, мастерить", k:"witch"},
+    {t:"Диван, еда и мемы", k:"zombie"},
+    {t:"Тишина, книга или любимая игра в одиночестве", k:"ghost"}
+  ]},
+  { q:"Если бы в школе можно было добавить одну вещь…", a:[
+    {t:"Чёткое расписание и куратора на связи", k:"mummy"},
+    {t:"Уроки в удобное время суток", k:"vampire"},
+    {t:"Больше живого общения и командных занятий", k:"werewolf"},
+    {t:"Больше практики и творческих проектов", k:"witch"},
+    {t:"Побольше свободы и гибкости", k:"zombie"},
+    {t:"Небольшие классы и спокойную атмосферу", k:"ghost"}
+  ]}
+];
+
+let idx = 0, answers = [], finalKey = null, cardBlob = null, cardUrl = null;
+const $ = id => document.getElementById(id);
+
+/* ---------- Оформление страницы ---------- */
+function buildScene(){
+  let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 150">
+    <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B1466"/><stop offset="1" stop-color="#8A47E0"/></linearGradient></defs>
+    <rect width="360" height="150" fill="url(#sky)"/>`;
+  [[24,18],[78,56],[160,16],[200,46],[250,70],[338,22],[348,96],[140,84],[104,20],[320,64]].forEach(p=>{
+    s += `<circle cx="${p[0]}" cy="${p[1]}" r="2.2" fill="#FFF3E0"/>`;
+  });
+  s += svgNested('moon',262,10,78,78);
+  s += svgNested('bat',34,22,54,32) + svgNested('bat',118,58,38,22) + svgNested('bat',206,16,44,26);
+  s += `<path d="M0 150V124C60 106 120 132 180 122C240 112 300 132 360 118V150Z" fill="#1B0F3B"/>`;
+  s += svgNested('pumpkin',12,88,62,62) + svgNested('pumpkin',80,114,36,36) + svgNested('ghost',286,76,70,72);
+  return s + `</svg>`;
+}
+
+function buildDecor(){
+  const d = $('decor');
+  const cfg = [{top:'12vh',w:70,dur:26,delay:0},{top:'42vh',w:54,dur:34,delay:-12},{top:'72vh',w:62,dur:30,delay:-20}];
+  cfg.forEach(c=>{
+    const el = document.createElement('div');
+    el.className = 'fbat';
+    el.style.top = c.top; el.style.width = c.w + 'px';
+    el.style.animationDuration = c.dur + 's'; el.style.animationDelay = c.delay + 's';
+    el.innerHTML = svgFull('bat');
+    d.appendChild(el);
+  });
+  [['pk','pumpkin'],['gh','ghost'],['pk2','pumpkin']].forEach(p=>{
+    const el = document.createElement('div');
+    el.className = 'corner ' + p[0];
+    el.innerHTML = svgFull(p[1]);
+    d.appendChild(el);
+  });
+}
+
+function buildLineup(){
+  const box = $('lineup');
+  Object.keys(CHARS).forEach(k=>{
+    const m = document.createElement('div');
+    m.className = 'mini';
+    m.style.background = CHARS[k].color;
+    m.innerHTML = svgFull(k);
+    box.appendChild(m);
+  });
+}
+
+$('scene').innerHTML = buildScene();
+buildDecor();
+buildLineup();
+$('share-hint').textContent = 'Выложите результат в сторис и отметьте ' + SCHOOL_HANDLE + ' — нам будет приятно посмотреть!';
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- Логика теста ---------- */
+function startQuiz(){
+  idx = 0; answers = []; finalKey = null; cardBlob = null;
+  $('lead-block').style.display = 'block';
+  $('lead-ok').style.display = 'none';
+  $('f-btn').disabled = false; $('f-btn').textContent = 'Отправить';
+  $('card-prev').removeAttribute('src');
+  renderQ();
+  show('s-q');
+}
+
+function renderQ(){
+  const item = Q[idx];
+  const bar = $('bar'); bar.innerHTML = '';
+  for(let i=0;i<Q.length;i++){
+    const m = document.createElement('i');
+    m.className = i < idx ? 'done' : i === idx ? 'cur' : '';
+    bar.appendChild(m);
+  }
+  $('stop').textContent = '🎃 Остановка ' + (idx+1) + ' из ' + Q.length;
+  $('q').textContent = item.q;
+  const box = $('opts'); box.innerHTML = '';
+  item.a.forEach(o=>{
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'opt'; b.textContent = o.t;
+    if(answers[idx] === o.k) b.classList.add('sel');
+    b.onclick = () => pick(o.k, b);
+    box.appendChild(b);
+  });
+  $('back').disabled = idx === 0;
+}
+
+function pick(k, el){
+  answers[idx] = k;
+  document.querySelectorAll('#opts .opt').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  setTimeout(()=>{
+    if(idx < Q.length - 1){ idx++; renderQ(); } else { finish(); }
+  }, 200);
+}
+function goBack(){ if(idx > 0){ idx--; renderQ(); } }
+
+function finish(){
+  const score = {};
+  Object.keys(CHARS).forEach(k=>score[k]=0);
+  answers.forEach(k=>{ score[k]++; });
+  const max = Math.max(...Object.values(score));
+  const tied = Object.keys(score).filter(k=>score[k]===max);
+  let winner = tied[0];
+  for(let i=answers.length-1;i>=0;i--){
+    if(tied.includes(answers[i])){ winner = answers[i]; break; }
+  }
+  finalKey = winner;
+  const c = CHARS[winner];
+  $('r-art').style.background = c.color;
+  $('r-art').innerHTML = svgFull(winner);
+  $('r-name').textContent = c.name;
+  $('r-tag').textContent = c.tag;
+  $('r-desc').textContent = c.desc;
+  $('r-power').textContent = c.power;
+  $('r-weak').textContent = c.weak;
+  $('r-tip').textContent = c.tip;
+  $('r-friend').textContent = c.friend;
+  show('s-res');
+  sendStats();
+  makePreview();
+}
+
+function sendStats(){
+  if(!STATS_FORM_URL || !STATS_ENTRY) return;
+  try{
+    fetch(STATS_FORM_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body: encodeURIComponent(STATS_ENTRY) + '=' + encodeURIComponent(CHARS[finalKey].short)
+    });
+  }catch(e){}
+}
+
+/* ---------- Карточка для сторис (1080×1920) ---------- */
+function svgToImg(str){
+  return new Promise((res,rej)=>{
+    const img = new Image();
+    img.onload = () => res(img);
+    img.onerror = rej;
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(str);
+  });
+}
+function loadImg(src){
+  return new Promise((res,rej)=>{
+    const img = new Image();
+    img.onload = () => res(img);
+    img.onerror = rej;
+    img.src = src;
+  });
+}
+function rr(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function sparkle(ctx,x,y,r,col){
+  ctx.fillStyle = col;
+  ctx.beginPath();
+  ctx.moveTo(x,y-r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.quadraticCurveTo(x,y,x,y+r);
+  ctx.quadraticCurveTo(x,y,x-r,y);
+  ctx.quadraticCurveTo(x,y,x,y-r);
+  ctx.fill();
+}
+function wrapLines(ctx,text,maxW){
+  const words = text.split(' '); const lines = []; let line = '';
+  words.forEach(w=>{
+    const t = line ? line + ' ' + w : w;
+    if(ctx.measureText(t).width > maxW && line){ lines.push(line); line = w; } else { line = t; }
+  });
+  if(line) lines.push(line);
+  return lines;
+}
+function strokedText(ctx,text,x,y,maxW,size,fill){
+  let s = size;
+  const font = n => `800 ${n}px Manrope,"Segoe UI",Arial,sans-serif`;
+  ctx.font = font(s);
+  while(ctx.measureText(text).width > maxW && s > 28){ s -= 4; ctx.font = font(s); }
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = Math.max(8, s*0.2);
+  ctx.strokeStyle = INK;
+  ctx.strokeText(text,x,y);
+  ctx.fillStyle = fill;
+  ctx.fillText(text,x,y);
+}
+
+async function buildCard(withLogo){
+  const c = CHARS[finalKey];
+  const W = 1080, H = 1920;
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  try{ await document.fonts.load('800 60px Manrope'); }catch(e){}
+
+  const [charImg, pumpImg, batImg, moonImg] = await Promise.all([
+    svgToImg(svgFull(finalKey)), svgToImg(svgFull('pumpkin')),
+    svgToImg(svgFull('bat')), svgToImg(svgFull('moon'))
+  ]);
+  let logoImg = null;
+  if(withLogo){ try{ logoImg = await loadImg(LOGO_URL); }catch(e){ logoImg = null; } }
+
+  // фон
+  const g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#4A24C8'); g.addColorStop(0.5,'#9B3FD9'); g.addColorStop(1,'#FF8A2B');
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+  // лучи
+  ctx.save(); ctx.translate(540,790);
+  for(let i=0;i<24;i+=2){
+    ctx.beginPath(); ctx.moveTo(0,0);
+    ctx.arc(0,0,1600,i*Math.PI/12,(i+1)*Math.PI/12);
+    ctx.closePath(); ctx.fillStyle = 'rgba(255,255,255,0.09)'; ctx.fill();
+  }
+  ctx.restore();
+
+  // искорки
+  [[110,260,16,'#FFE27A'],[980,300,12,'#fff'],[90,700,12,'#fff'],[1000,1000,18,'#FFE27A'],[70,1120,14,'#FFE27A'],[960,1240,12,'#fff'],[200,420,10,'#fff'],[900,430,14,'#FFE27A']]
+    .forEach(s=>sparkle(ctx,s[0],s[1],s[2],s[3]));
+
+  // луна и летучие мыши
+  ctx.drawImage(moonImg,850,450,190,190);
+  ctx.drawImage(batImg,30,470,190,111);
+  ctx.drawImage(batImg,170,1010,130,76);
+  ctx.drawImage(batImg,860,1060,160,94);
+  ctx.drawImage(batImg,730,300,110,64);
+
+  // плашка сверху
+  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  rr(ctx,90,270,900,100,50);
+  ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.lineWidth = 7; ctx.strokeStyle = INK; ctx.stroke();
+  ctx.fillStyle = INK;
+  ctx.font = '800 46px Manrope,"Segoe UI",Arial,sans-serif';
+  ctx.fillText('КАКОЙ ТЫ МОНСТР В ШКОЛЕ?', 540, 334);
+
+  // круг с персонажем
+  ctx.beginPath(); ctx.arc(540,790,340,0,Math.PI*2);
+  ctx.fillStyle = INK; ctx.fill();
+  ctx.beginPath(); ctx.arc(540,790,326,0,Math.PI*2);
+  ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.beginPath(); ctx.arc(540,790,304,0,Math.PI*2);
+  ctx.fillStyle = c.color; ctx.fill();
+  ctx.save();
+  ctx.beginPath(); ctx.arc(540,790,304,0,Math.PI*2); ctx.clip();
+  ctx.drawImage(charImg,252,502,576,576);
+  ctx.restore();
+
+  // «Я — ВАМПИР!»
+  strokedText(ctx,'Я — ' + c.short + '!',540,1250,940,124,'#FFE27A');
+
+  // реплика
+  ctx.font = '800 50px Manrope,"Segoe UI",Arial,sans-serif';
+  const lines = wrapLines(ctx,c.cap,780);
+  const bh = 52 + lines.length*62;
+  rr(ctx,100,1296,880,bh,40);
+  ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.lineWidth = 7; ctx.strokeStyle = INK; ctx.stroke();
+  ctx.fillStyle = INK;
+  lines.forEach((ln,i)=> ctx.fillText(ln,540,1296 + 34 + 52 + i*62 - 20));
+
+  // тыквы
+  ctx.drawImage(pumpImg,50,1470,180,180);
+  ctx.drawImage(pumpImg,850,1470,180,180);
+
+  // логотип
+  rr(ctx,270,1496,540,124,62);
+  ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.lineWidth = 7; ctx.strokeStyle = INK; ctx.stroke();
+  if(logoImg){
+    const maxW = 460, maxH = 90;
+    const k = Math.min(maxW/logoImg.width, maxH/logoImg.height);
+    const lw = logoImg.width*k, lh = logoImg.height*k;
+    ctx.drawImage(logoImg, 540 - lw/2, 1558 - lh/2, lw, lh);
+  } else {
+    ctx.fillStyle = '#6A35E8';
+    ctx.font = '800 62px Manrope,"Segoe UI",Arial,sans-serif';
+    ctx.fillText('School Inter',540,1580);
+  }
+
+  // призыв
+  strokedText(ctx,'Пройди тест — ссылка в профиле ' + SCHOOL_HANDLE,540,1730,960,40,'#fff');
+  return cv;
+}
+
+async function exportCard(){
+  for(const useLogo of [true,false]){
+    try{
+      const cv = await buildCard(useLogo);
+      const blob = await new Promise((res,rej)=>{
+        try{ cv.toBlob(b => b ? res(b) : rej(new Error('empty')), 'image/png'); }catch(e){ rej(e); }
+      });
+      return blob;
+    }catch(e){}
+  }
+  return null;
+}
+
+async function makePreview(){
+  const blob = await exportCard();
+  if(!blob) return;
+  cardBlob = blob;
+  if(cardUrl) URL.revokeObjectURL(cardUrl);
+  cardUrl = URL.createObjectURL(blob);
+  $('card-prev').src = cardUrl;
+}
+
+async function shareCard(){
+  try{
+    const blob = cardBlob || await exportCard();
+    if(!blob) return;
+    cardBlob = blob;
+    const file = new File([blob], 'school-inter-monster.png', {type:'image/png'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file]});
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'school-inter-monster.png';
+    document.body.appendChild(a); a.click(); a.remove();
+  }catch(e){}
+}
+
+function pageUrl(){ return location.href.split('#')[0]; }
+
+async function shareLink(){
+  const text = 'Какой ты монстр в школе? 🎃 Пройди тест, у меня — ' + (finalKey ? CHARS[finalKey].name : '...');
+  try{
+    if(navigator.share){ await navigator.share({title:'Какой ты монстр в школе?', text:text, url:pageUrl()}); return; }
+    await navigator.clipboard.writeText(text + ' ' + pageUrl());
+    alert('Ссылка скопирована. Отправьте её другу!');
+  }catch(e){}
+}
+
+/* ---------- Заявка ---------- */
+async function sendLead(){
+  const name = $('f-name').value.trim();
+  const phone = $('f-phone').value.trim();
+  if(!name || !phone){ alert('Пожалуйста, укажите имя и телефон или Telegram.'); return; }
+  if(!LEADS_URL){ alert('Форма пока не подключена к таблице. Добавьте адрес в настройках теста.'); return; }
+  const btn = $('f-btn'); btn.disabled = true; btn.textContent = 'Отправляем...';
+  const body = new URLSearchParams({
+    name:name, phone:phone,
+    source:'Хэллоуин-тест',
+    monster: finalKey ? CHARS[finalKey].name : '-'
+  });
+  try{
+    // no-cors: ответ Google не читается, но данные в таблицу доходят
+    await fetch(LEADS_URL, { method:'POST', mode:'no-cors', body:body });
+    $('lead-block').style.display = 'none';
+    $('lead-ok').style.display = 'block';
+  }catch(e){
+    alert('Не получилось отправить. Проверьте соединение и попробуйте ещё раз.');
+    btn.disabled = false; btn.textContent = 'Отправить';
+  }
+}
+</script>
+</body>
+</html>
